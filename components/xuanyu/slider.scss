@@ -1,0 +1,14 @@
+.x-slider {
+	uni-slider,
+	slider{
+		margin: 0;
+		.uni-slider-thumb,
+		.wx-slider-thumb{
+			box-shadow: $slider-button-box-shadow;
+		}
+	}
+	&--disabled {
+		cursor: not-allowed;
+		opacity: $slider-disabled-opacity;
+	}
+}
