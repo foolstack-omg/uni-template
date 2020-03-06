@@ -86,12 +86,20 @@ const login = async (params = {}) => {
 const weappLogin = async (params = {}) => {
 	let app = getApp()
 	// code 只能使用一次，所以每次单独调用
-	let loginData = await uni.login()
+	let [errorLogin, loginData] = await uni.login()
+	if(errorLogin) {
+		console.log('登录失败')
+		return false
+	}
 	
 	// 参数中增加code
 	params.code = loginData.code
 	
-	let settingData = await uni.getSetting()
+	let [errorSetting, settingData] = await uni.getSetting()
+	if(errorSetting) {
+		console.log('配置获取失败')
+		return false
+	}
 	
 	console.log('setting data')
 	console.log(settingData)
@@ -103,7 +111,10 @@ const weappLogin = async (params = {}) => {
 	    console.log('用户已授权')
 	    console.log(settingData.authSetting['scope.userInfo'])
 	
-	    let userInfoData = await uni.getUserInfo()
+	    let [errorUserInfo, userInfoData] = await uni.getUserInfo()
+	    if(errorUserInfo) {
+	    	return false
+	    }
 	    console.log(userInfoData)
 	    let userInfo = userInfoData.userInfo
 	    params.name = userInfo.nickName
@@ -138,10 +149,10 @@ const loginCallback = async (response) => {
 	    url: 'user'
 	}, true)
 	if (authResponse.data.status === 1) {
-		await app.setUserInfo(response.data.data)
-	    return response
+		await app.setUserInfo(authResponse.data.data)
+	    return authResponse
 	} else {
-	    return response
+	    return authResponse
 	}
 }
 
