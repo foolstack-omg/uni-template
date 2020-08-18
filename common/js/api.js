@@ -1,5 +1,6 @@
 import util from './util'
 import log from './log'
+import store from '../../store/index.js'
 let host = null
 
 if(process.env.NODE_ENV === 'development') {

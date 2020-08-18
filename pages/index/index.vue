@@ -11,14 +11,23 @@
 <script>
 	import api from '@/common/js/api.js'
 	const app = getApp()
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
+	
 	export default {
 		data() {
 			return {
 				title: 'Hello'
 			}
 		},
+		
 		onLoad() {
 
+		},
+		computed: {
+			...mapState(['user']),
 		},
 		methods: {
 			async getUserInfo() {

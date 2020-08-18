@@ -88,6 +88,35 @@ function debounce(fn, interval) {
     };
 }
 
+const countDown = (remain_timestamp) => {
+    let days = 0, hours = 0, minutes = 0, seconds = 0
+    if(remain_timestamp > 0) {
+        hours = Math.floor(remain_timestamp / 3600)
+        remain_timestamp -= hours * 3600
+        minutes = Math.floor(remain_timestamp / 60)
+        remain_timestamp -= minutes * 60
+        seconds = remain_timestamp
+    }
+    return {
+        hours: hours,
+        minutes: minutes,
+        seconds: seconds
+    }
+}
+
+const prefixZero = (num, n)  => {
+    return (Array(n).join(0) + num).slice(-n);
+}
+
+function getQueryString(name)
+{
+   var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+   var r = window.location.search.substr(1).match(reg);
+   if(r!=null)return unescape(r[2]); return null;
+}
+
 export default {
-    formatTime, formatNumber, base64ToString, formatBankCardNumber, throttle, debounce, controlDigitField
+    formatTime, formatNumber, base64ToString, 
+	formatBankCardNumber, throttle, debounce, controlDigitField,
+	countDown, prefixZero, getQueryString
 }

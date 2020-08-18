@@ -1,6 +1,7 @@
 <script>
 	import api from '@/common/js/api'
 	import log from '@/common/js/log'
+	import store from '@/store/index.js'
 	
 	export default {
 		async onLaunch() {
@@ -93,15 +94,6 @@
 					return true
 				}
 			},
-			// 获取用户信息
-			async logout() {
-				await api.logout()
-				uni.clearStorage()
-				uni.reLaunch({
-					url: '/pages/login'
-				})
-				
-			},
 			async getUserInfo() {
 				if( getApp().globalData.userInfo !== null) {
 					return getApp().globalData.userInfo
@@ -110,17 +102,21 @@
 				getApp().globalData.userInfo = user ? user : null
 				return getApp().globalData.userInfo
 			},
-			async setUserInfo(user) {
-				getApp().globalData.userInfo = user
-				uni.setStorageSync('user', user)
+			async logout() {
+				uni.clearStorage()
+				store.commit('unsetUser')
+				// await api.logout()
 			},
+			async setUserInfo(user) {
+				uni.setStorageSync('user', user)
+				store.commit('setUser', user)
+			},
+			
 		
 		},
 		
 
 		globalData: {
-			userInfo: null,
-			
 		}
 		
 	}

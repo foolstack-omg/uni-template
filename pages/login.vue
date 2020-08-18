@@ -15,7 +15,10 @@
 			</view>
 		</view>
 		<view style="padding: 20rpx;">
-			<button @click="login" class="x-button x-button--primary x-button--large">登录</button>
+			<button @click="login" class="x-button x-button--info x-button--large">登录</button>
+		</view>
+		<view style="padding: 20rpx;">
+			<button open-type="getUserInfo" @getuserinfo="getUserInfo" class="x-button x-button--primary x-button--large">微信登录</button>
 		</view>
 		
 	</view>
@@ -76,7 +79,20 @@ export default {
 				})
 			}
 			
-		}
+		},
+		async getUserInfo() {
+			let response = await api.weappLogin()
+			if(response.data.status == 1) {
+				uni.reLaunch({
+					url: '/pages/index/index'
+				})
+			}else {
+				uni.showToast({
+					title: response.data.message,
+					icon: 'none'
+				})
+			}
+		},
 	},
 	onUnload() {}
 };
